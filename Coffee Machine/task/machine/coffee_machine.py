@@ -1,7 +1,10 @@
-print('Starting to make a coffee')
-print('Grinding coffee beans')
-print('Boiling water')
-print('Mixing boiled water with crushed coffee beans')
-print('Pouring coffee into the cup')
-print('Pouring some milk into the cup')
-print('Coffee is ready!')
+WATER = 200
+MILK = 50
+BEANS = 15
+
+cups = int(input("Write how many cups of coffee you will need:\n"))
+
+print(f'for {cups} cups you will need:')
+print(f'{cups * WATER} ml of water')
+print(f'{cups * MILK} ml of milk')
+print(f'{cups * BEANS} g of coffee beans')
