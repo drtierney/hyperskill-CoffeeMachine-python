@@ -1,98 +1,80 @@
-stock_levels = {
-    'money': 550,
-    'water': 400,
-    'milk': 540,
-    'coffee beans': 120,
-    'disposable cups': 9,
-}
+class CoffeeMachine:
+    def __init__(self, water, milk, coffee_beans, cups, money):
+        self.water = water
+        self.milk = milk
+        self.coffee_beans = coffee_beans
+        self.cups = cups
+        self.money = money
+
+    def remaining(self):
+        print("The coffee machine has:")
+        print(f"{self.water} of water")
+        print(f"{self.milk} of milk")
+        print(f"{self.coffee_beans} of coffee beans")
+        print(f"{self.cups} of disposable cups")
+        print(f"${self.money} of money")
+
+    def buy(self):
+        coffee_choice = input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:\n")
+        if coffee_choice == 'back':
+            return
+        coffee_choice = int(coffee_choice)
+        if self.water < 200:
+            print("Sorry, not enough water!")
+            return
+        elif self.milk <= 0:
+            print("Sorry, not enough milk!")
+            return
+        elif self.coffee_beans < 12:
+            print("Sorry, not enough coffee_beans!")
+            return
+        elif self.cups <= 0:
+            print("Sorry, not enough disposable cups!")
+            return
+
+        if coffee_choice == 1:
+            self.water -= 250
+            self.coffee_beans -= 16
+            self.money += 4
+        elif coffee_choice == 2:
+            self.water -= 350
+            self.milk -= 75
+            self.coffee_beans -= 20
+            self.money += 7
+        elif coffee_choice == 3:
+            self.water -= 200
+            self.milk -= 100
+            self.coffee_beans -= 12
+            self.money += 6
+        self.cups -= 1
+        print("I have enough resources, making you a coffee!")
+
+    def fill(self):
+        self.water += int(input("Write how many ml of water do you want to add:\n"))
+        self.milk += int(input("Write how many ml of milk do you want to add:\n"))
+        self.coffee_beans += int(input("Write how many grams of coffee beans do you want to add:\n"))
+        self.cups += int(input("Write how many disposable cups of coffee do you want to add:\n"))
+
+    def take(self):
+        print(f"I gave you ${self.money}")
+
+    def run(self):
+        while True:
+            action = input("Write action (buy, fill, take, remaining, exit):\n")
+            print()
+            if action == 'buy':
+                self.buy()
+            elif action == 'fill':
+                self.fill()
+            elif action == 'take':
+                self.take()
+                self.money = 0
+            elif action == 'remaining':
+                self.remaining()
+            elif action == 'exit':
+                exit()
+            print()
 
 
-def buy():
-    choice = input('What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:, back - to main menu\n')
-    if choice == '1':
-        if can_make_drink(250, 0, 16):
-            stock_levels['water'] -= 250
-            stock_levels['coffee beans'] -= 16
-            stock_levels['disposable cups'] -= 1
-            stock_levels['money'] += 4
-    elif choice == '2':
-        if can_make_drink(350, 75, 20):
-            stock_levels['water'] -= 350
-            stock_levels['milk'] -= 75
-            stock_levels['coffee beans'] -= 20
-            stock_levels['disposable cups'] -= 1
-            stock_levels['money'] += 7
-    elif choice == '3':
-        if can_make_drink(200, 100, 12):
-            stock_levels['water'] -= 200
-            stock_levels['milk'] -= 100
-            stock_levels['coffee beans'] -= 12
-            stock_levels['disposable cups'] -= 1
-            stock_levels['money'] += 6
-
-
-def can_make_drink(water_needed, milk_needed, beans_needed):
-    if stock_levels.get('water') >= water_needed:
-        if stock_levels.get('milk') >= milk_needed:
-            if stock_levels.get('coffee beans') >= beans_needed:
-                print('I have enough resources, making you a coffee!')
-                return True
-            else:
-                print('Sorry, not enough beans!')
-                return False
-        else:
-            print('Sorry, not enough milk!')
-            return False
-    else:
-        print('Sorry, not enough water!')
-        return False
-
-
-def fill():
-    stock_levels['water'] += int(input('Write how many ml of water do you want to add:\n'))
-    stock_levels['milk'] += int(input('Write how many ml of milk do you want to add:\n'))
-    stock_levels['coffee beans'] += int(input('Write how many ml of coffee beans do you want to add:\n'))
-    stock_levels['disposable cups'] += int(input('Write how many disposable cups do you want to add:\n'))
-
-
-def take():
-    amount = stock_levels.get('money')
-    print(f'I gave you ${amount}')
-    stock_levels['money'] = 0
-
-
-def remaining():
-    print()
-    print('The coffee machine has:')
-    for item in ['water', 'milk', 'coffee beans', 'disposable cups', 'money']:
-        print(f'{"$" if item == "money" else ""}{stock_levels.get(item)} of {item}')
-    print()
-
-
-def end():
-    exit()
-
-
-def make_action(action):
-    if action == 'buy':
-        buy()
-    elif action == 'fill':
-        fill()
-    elif action == 'take':
-        take()
-    elif action == "remaining":
-        remaining()
-    elif action == "exit":
-        end()
-    else:
-        print('Invalid action!')
-
-
-def main():
-    while True:
-        act = input('Write action (buy, fill, take, remaining, exit):\n')
-        make_action(act)
-
-
-if __name__ == '__main__':
-    main()
+cf = CoffeeMachine(400, 540, 120, 9, 550)
+cf.run()
